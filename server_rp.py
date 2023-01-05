@@ -1,92 +1,64 @@
-import socket,time,IO,threading
+import socket,threading
+class server_tcp:
+    def __init__(self,HOST: str,PORT: int,gpio,close,timer):
+        self.HOST = HOST
+        self.PORT = PORT
+        self.gpio = gpio
+        self.close = close
+        self.timer = timer
+        self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.thread_server = threading.Thread(target=self.server)
+        self.thread_server.start()
 
-def server():
-    HOST = ''
-    PORT = 50000
-    try:
-        while True:
-            try:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.bind((HOST,PORT))
-                    s.listen(1)
-                    conn, addr = s.accept()
-                    with conn:
-                        print('connected by: ', addr)
-                        
-                        while True:
-                            data = conn.recv(1024)
-                            if not data: time.sleep(1)
-                            conn.sendall(data)
-                            #ligar luz
-                            if data.decode("utf-8") == "on":
-                                IO.on()
-                                data = ''
-                            #desligar luz
-                            elif data.decode("utf-8") == "off":
-                                IO.off()
-                                data = ''
-                            elif data.decode("utf-8") == "timer":
-                                global state_timer
-                                conn.send(data)
-                                print(data)
-                                data = ''
-                                time.sleep(0.1)
-                                if state_timer: conn.send(b"1")
-                                else: conn.send(b"0")
-                                while True:
-                                    data = conn.recv(1024)
-                                    if not data: time.sleep(1)
-                                    print(data)
-                                    if data.decode() == "1":
-                                        state_timer = True
-                                        break
-                                    elif data.decode() == "0":
-                                        state_timer = False
-                                        break
-                            # definir timer
-                            elif data.decode("utf-8") == "time":
-                                global horario_t
-                                conn.sendall(horario_t.encode('utf-8'))
-                                while True:
-                                    data = conn.recv(1024)
-                                    if not data: time.sleep(1)
-                                    conn.sendall(data)
-                                    horario = data.decode("utf-8")
-                                    var1,var2 = horario.split(":")
-                                    if var1.isdigit() and var2.isdigit():
-                                        if (int(var1) > 0 and int(var1) < 24) and (int(var2) >= 0 and int(var2) < 60):
-                                            time_clock(var1,var2)
-                                            data = ""
-                                            conn.sendall(b'ok')
-                                            break
-                            elif data.decode("utf-8") == "dsc_off":
-                                s.close()
-                                break
-            except socket.timeout:
-                s.close()
-                continue
-    except KeyboardInterrupt:
-        print("Thread finished -1")
-        s.close()
-        return -1
-    except OSError:
-        print("OSError")
-        s.close()
-        main.reborn()
-        return -1
-
-def reconect(s):
-    s.bind(('',50000))
-    s.listen(1)
-    conn, addr = s.accept()
-    with conn:
-        print('connected byy: ', addr)
-
-def reborn():
-    t.join()
-    t = threading.Thread(target=server,args=())
-    t.start()
-        
-def start():
-    t  = threading.Thread(target=server,args=())
-    t.start()
+    def server(self):
+        with self.s:
+            self.s.bind((self.HOST,self.PORT))
+            self.s.listen(1)
+            if self.close: return 0 
+            conn, addr = self.s.accept()
+            print('connected by: ', addr)
+            while True:
+                if self.close: break
+                data = conn.recv(1024)
+                conn.send(data)
+                data = data.decode('utf-8')
+                
+                if 'GET' in data:
+                    if 'all' in data:
+                        list_state = gpio.state()
+                        conn.send('on'.encode('utf-8'))
+                        data = conn.recv(1024)
+                        data = ''
+                        for x in list_state['on']:
+                            data = str(x) + ','
+                        conn.send(data.encode('utf-8'))
+                    elif  'out' in data:
+                        pass
+                    elif 'in' in data:
+                        pass
+                    elif 'alarm' in data:
+                        pass
+                    else: 
+                        data = ''
+                        continue
+                elif 'SET' in data:
+                    if 'out' in data:
+                        if 'on' in data:
+                            data = data.replace('SET out','')
+                            data = data.replace('on','')
+                            print(data)
+                            self.gpio.on(int(data))
+                        else:
+                            data = data.replace('SET out','')
+                            data = data.replace('off','')
+                            print(data)
+                            self.gpio.on(int(data))
+                    elif 'alarm' in data:
+                        pass
+                    elif 'shutdown':
+                        pass
+                    else :
+                        data = ''
+                        continue
+    def close(self):
+        self.close = True

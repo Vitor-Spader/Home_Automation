@@ -1,0 +1,9 @@
+SET = Used to set parameter
+    * out:
+    * alarm:
+
+GET = Used to get parameter(s)
+    *all:
+    *out:
+    *in:
+    *alarm:

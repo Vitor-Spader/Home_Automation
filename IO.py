@@ -8,7 +8,7 @@ class IO:
 
         if mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
-        self.setup(self)
+        self.setup()
     
     def setup(self):
         for x in self.l_inp:
@@ -16,7 +16,7 @@ class IO:
         for x in self.l_out:
             GPIO.setup(x,GPIO.OUT)
     
-    def verif_in(inp):
+    def verif_in(self,inp):
         return GPIO.input(inp)
         
     def on(self,out):
@@ -27,7 +27,9 @@ class IO:
 
     def switch(self,out):
         #se a saida estiver acionada desliga
-        self.on(out) if GPIO.input(out) == 0 else self.off(out)
+        if GPIO.input(out) == 0:
+            self.off(out)     
+        else: self.on(out)
     
     def state(self):
         state_list = {'on':[],'off':[]}
