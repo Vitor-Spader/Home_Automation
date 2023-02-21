@@ -12,13 +12,13 @@ class alarm:
 
     def timer(self):
         while True:
-            if self.close: break
+            if self.close: return 0
             hora = datetime.datetime.now()
             if hora.hour == self.horas and hora.minute == self.minutos and self.state_timer:
                 self.gpio.on()
                 time.sleep(60)
             time.sleep(1)
-    def close(self):
+    def close_thread(self):
         self.close = True
     def set_time(self,horas,minutos):
         self.horas = horas

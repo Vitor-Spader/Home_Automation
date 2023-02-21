@@ -1,4 +1,4 @@
-import time,alarm_clock,server_rp,IO as io
+import time,alarm_clock,server_rp,threading,IO as io
 #list of inputs/buttons
 l_inp = [2]
 #list of outputs
@@ -12,7 +12,7 @@ botao = True if gpio.verif_in(2) else False
 #quais luzes em quais horarios?
 timer = alarm_clock.alarm(gpio)
 #object to treat te tcp connection
-server = server_rp.server_tcp(gpio,timer,HOST='',PORT=5000)
+server = server_rp.server_tcp(gpio=gpio,timer=timer,HOST='',PORT=5000)
 
 try:
     #verify if the button switched 
@@ -26,10 +26,10 @@ try:
         else: time.sleep(0.02) 
 except KeyboardInterrupt:
     #close thread timmer
-    timer.close()
+    timer.close_thread()
     #close thread server
-    server.close()
-    #cleanup gpio configuration
+    server.close_thread()
+    #cleanup gpio configurat
     gpio.close()
     print("KeyboardInterrupt error!!!")
 
