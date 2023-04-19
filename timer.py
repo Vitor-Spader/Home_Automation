@@ -9,10 +9,10 @@ class alarm_clock:
 
     def __init__(self,gpio,start_time = "6:0",state_active = True):
         if gpio == None: return
-        __test_hour(start_time.split(':'))
+        self.__test_hour(start_time.split(':'))
         self.state_active = state_active
         self.mutex = Lock()
-        thread = Thread(target=alarm_clock, args=(self.mutex))
+        thread = Thread(target=alarm_clock, args=[self.mutex])
         thread.start()
 
     def get_state(self):
@@ -27,17 +27,16 @@ class alarm_clock:
     def set_time_clock(self,time):
         return self.__test_hour(time.split(":"))
 
-    def __test_hour(self,aux_hour,aux_min):
+    def __test_hour(self,aux_hour):
         try:
-            aux_hour,aux_min = time.split(":")
-            aux_hour = int(aux_hour)
-            aux_min  = int(aux_min) 
+            aux_hour[0] = int(aux_hour[0])
+            aux_hour[1]  = int(aux_hour[1]) 
 
-            if not(aux_hour < 24 and aux_hour >= 0): return False
-            if not(aux_min < 60 and aux_min >= 0): return False
+            if not(aux_hour[0] < 24 and aux_hour[0] >= 0): return False
+            if not(aux_hour[1] < 60 and aux_hour[1] >= 0): return False
             self.mutex.acquire()
-            self.hour   = aux_hour
-            self.minute = aux_min
+            self.hour   = aux_hour[0]
+            self.minute = aux_hour[1]
             self.mutex.release()
             return True
         except:

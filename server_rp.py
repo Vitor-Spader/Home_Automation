@@ -2,19 +2,23 @@ import socket,IO,threading
 
 class server:
 
-    def __init__(self,PORT,HOST,gpio,time):
+    def __init__(self,PORT,HOST,gpio,time,mutex):
         self.HOST = HOST
         self.PORT = PORT
         self.gpio = gpio
         self.time = time
+        self.mutex = mutex
+        self.__init_server()
 
-    def __init__(self,gpio,time):
+    def __init__(self,gpio,time,mutex):
         self.HOST = ''
         self.PORT = 123
         self.gpio = gpio
         self.time = time
+        self.mutex = mutex
+        self.__init_server()
     def __init_server(self):
-        thread_server = threading.Thread(target=rp_server,args=(mutex))
+        thread_server = threading.Thread(target=self.rp_server,args=[self.mutex])
         thread_server.start()
 
     def __buffer_server(self, conn):

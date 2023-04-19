@@ -1,33 +1,31 @@
-import time,datetime,socket,threading,IO,timer
+import time,IO as io,timer as timer,server_rp as servidor
+from threading import Lock
 
 l_inp = [2]
 l_out = [17]
 
+def input_dados():
+    return input("Digite o horário que deseja que a luz seja ligada(00:00): ")
 # Inicializa IO
-gpio = IO('BCM',l_inp,l_out)
+gpio = io.IO('BCM',l_inp,l_out)
 #Inicializa Função de despertador
-time = timer.alarm_clock(gpio,input_dados(),True)
+time_clock = timer.alarm_clock(gpio,state_active = True)
 #Inicializa Servidor
 mutex = Lock()
-t0  = threading.Thread(target=server,args=(mutex))
-t0.start()
+server = servidor.server(gpio,time,mutex)
+botao = gpio.verif_in(2)
 
 while True:
     mutex.acquire()
-    if gpio.verif_in(2) and botao:
-        botao = False
-        IO.switch()
-    elif not gpio.verif_in(2) and not botao:
-        botao = True
-        IO.switch()
-    else: time.sleep(0.02)
-    mutex.release() 
+    if gpio.verif_in(2) != botao:
+        gpio.switch(17)
+        botao = gpio.verif_in(2)
+        mutex.release()
+    else:
+        mutex.release()
+        time.sleep(0.1)
 
-
-t.join()
 gpio.close()
 
-def input_dados():
-    return input("Digite o horário que deseja que a luz seja ligada(00:00): ")
     
     
