@@ -15,19 +15,19 @@ class alarm_clock:
         thread = Thread(target=alarm_clock, args=(self.mutex))
         thread.start()
 
-    def get_state():
-        return state_active
+    def get_state(self):
+        return self.state_active
 
     def set_state(self,state):
         self.state_active = True if state else False
     
-    def get_time_clock():
-        return str(horas)+":"+str(minutos)
+    def get_time_clock(self):
+        return str(self.horas)+":"+str(self.minutos)
 
-    def set_time_clock(time):
-        return __test_hour(time.split(":"))
+    def set_time_clock(self,time):
+        return self.__test_hour(time.split(":"))
 
-    def __test_hour(aux_hour,aux_min):
+    def __test_hour(self,aux_hour,aux_min):
         try:
             aux_hour,aux_min = time.split(":")
             aux_hour = int(aux_hour)
@@ -42,6 +42,9 @@ class alarm_clock:
             return True
         except:
             return False
+    def close():
+        raise Exception('Close')
+
     def alarm_clock(self,mutex):
         try:
             while True:
@@ -52,4 +55,5 @@ class alarm_clock:
                 mutex.release()
                 time.sleep(60)
         except:
+            mutex.release()
             return
