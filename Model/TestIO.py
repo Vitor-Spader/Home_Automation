@@ -1,4 +1,6 @@
-class Test_IO(Model.Board):
+from Interface import IBoard
+
+class TestIO(Model.IBoard):
     def __init__(self, _mode='BCM', _list_input=[], list_output=[], _list_relationship=[]):
         self.list_input = _list_input
         self.list_output = _list_output

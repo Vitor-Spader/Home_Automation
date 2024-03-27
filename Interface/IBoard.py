@@ -1,4 +1,4 @@
-class Board:
+class IBoard:
     def __init__(self) -> None:
         pass
     def set_on(self, _id:list) -> None:
