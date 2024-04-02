@@ -23,7 +23,7 @@ app = FastAPI()
 #Modelos de dados a serem recebidos pela API
 class Light(BaseModel):
     Id_board: int
-    Id:list|int
+    Id:list#|int
 
 #Definição de métodos e paths permitidos
 @app.post("/turn_on")
