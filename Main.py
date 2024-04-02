@@ -8,9 +8,9 @@ import platform
 
 board:IBoard.IBoard
 
-if platform.machine() == 'armv7l':
+if platform.machine() in ['armv7l','aarch64']:
     from Model import Raspberry
-    board = [Raspberry.Raspberry(_list_input=[2],_list_output=[17],_list_relationship=[None,[17]])]
+    board = [Raspberry.Raspberry(_list_input=[2],_list_output=[17],_list_relationship={2:[17]})]
 else:
     from Model import TestIO
     board = [TestIO.TestIO(_list_input=[2],_list_output=[17],_list_relationship=[None,[17]])]

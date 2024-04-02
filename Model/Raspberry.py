@@ -18,26 +18,26 @@ class Raspberry(IBoard.IBoard):
         GPIO.setup(self.list_output,GPIO.OUT, initial=GPIO.HIGH)
     
     def add_callback(self, callback):
-        GPIO.add_event_detect(self.list_input, GPIO.RISING, callback=callback)
+        GPIO.add_event_detect(self.list_input[0], GPIO.BOTH, callback=callback, bouncetime=200)
 
-    def callback(self):
-        self.switch(self.list_output)
+    def callback(self,_id):
+        self.switch(self.list_relationship[_id])
 
-    def set_on(self, _id:list) -> None:
+    def set_on(self, _id) -> None:
         GPIO.output(_id, GPIO.LOW)
 
-    def set_off(self, _id:list) -> None:
+    def set_off(self, _id) -> None:
         GPIO.output(_id, GPIO.HIGH)
 
-    def get_state(self, _id:list) -> bool:
+    def get_state(self, _id:int) -> bool:
         return GPIO.input(_id) == 1
 
     def get_mode(self, _id) -> str:
         return 'Input' if _id in self.list_input else 'Output'
 
     def switch(self, _id:list) -> None:
-        for channel in _id:
-            self.set_on(list(channel)) if get_state(list(channel)) else self.set_off(list(channel))
+        for id in _id:
+            self.set_on(id) if self.get_state(id) else self.set_off(id)
 
     def set_input(self, _id:int) -> bool:
         try:
