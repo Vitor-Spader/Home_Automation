@@ -25,7 +25,7 @@ class Controler:
 
     def get_state(self, _id_board, _id):
         self.__verify_list__(_id)
-        self.board[_id_board].get_state(_id)
+        return self.board[_id_board].get_state(_id)
     
     def __verify_list__(self, list_to_verify:[]):
         if list_to_verify is None:

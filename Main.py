@@ -10,10 +10,10 @@ board:IBoard.IBoard
 
 if platform.machine() == 'armv7l':
     from Model import Raspberry
-    board = Raspberry.Raspberry(_list_input=[2],_list_output=[17],_list_relationship=[None,[17]])
+    board = [Raspberry.Raspberry(_list_input=[2],_list_output=[17],_list_relationship=[None,[17]])]
 else:
     from Model import TestIO
-    board = TestIO.TestIO(_list_input=[2],_list_output=[17],_list_relationship=[None,[17]])
+    board = [TestIO.TestIO(_list_input=[2],_list_output=[17],_list_relationship=[None,[17]])]
 
 controler = Controler.Controler(board,
                                 Event.Event(None, datetime.time(6,0,0),Event.Event.EVERY_DAY,(lambda :board.set_on([17])))) 
@@ -23,7 +23,7 @@ app = FastAPI()
 #Modelos de dados a serem recebidos pela API
 class Light(BaseModel):
     Id_board: int
-    Id:int
+    Id:list|int
 
 #Definição de métodos e paths permitidos
 @app.post("/turn_on")
@@ -42,4 +42,4 @@ def request_refresh_database(Light:Light):
 
 @app.post("/state")
 def request_read_item(Light:Light):
-    return controler.get_state(_id_board=Light.Id_board, _id=Light.Id)
+    return {"state":controler.get_state(_id_board=Light.Id_board, _id=Light.Id)}
