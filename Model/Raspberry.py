@@ -14,8 +14,8 @@ class Raspberry(IBoard.IBoard):
         self.add_callback(self.callback)
     
     def __setup_IO__(self):
-        GPIO.setup(self._list_input,GPIO.IN)
-        GPIO.setup(self._list_output,GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(self.list_input,GPIO.IN)
+        GPIO.setup(self.list_output,GPIO.OUT, initial=GPIO.HIGH)
     
     def add_callback(self, callback):
         GPIO.add_event_detect(self.list_input, GPIO.RISING, callback=callback)
