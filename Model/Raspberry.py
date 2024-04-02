@@ -1,9 +1,9 @@
 import RPi.GPIO as GPIO
 from Interface import IBoard
 
-class Raspberry(Model.IBoard):
+class Raspberry(IBoard.IBoard):
 
-    def __init__(self, _mode='BCM', _list_input=[], list_output=[], _list_relationship=[]):
+    def __init__(self, _mode='BCM', _list_input=[], _list_output=[], _list_relationship=[]):
         self.list_input = _list_input
         self.list_output = _list_output
         self.list_relationship = _list_relationship
@@ -17,11 +17,11 @@ class Raspberry(Model.IBoard):
         GPIO.setup(self._list_input,GPIO.IN)
         GPIO.setup(self._list_output,GPIO.OUT, initial=GPIO.HIGH)
     
-    def add_callback(channel, callback):
+    def add_callback(self, callback):
         GPIO.add_event_detect(self.list_input, GPIO.RISING, callback=callback)
 
-    def callback(self,channel):
-        self.switch(self.list_relationship[channel])
+    def callback(self):
+        self.switch(self.list_output)
 
     def set_on(self, _id:list) -> None:
         GPIO.output(_id, GPIO.LOW)
