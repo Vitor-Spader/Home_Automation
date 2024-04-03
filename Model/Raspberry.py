@@ -3,7 +3,7 @@ from Interface import IBoard, ILoger
 
 class Raspberry(IBoard.IBoard):
 
-    def __init__(self, _mode='BCM', _list_input=[], _list_output=[], _list_relationship=[], _loger:ILoger.ILoger=ILoger.ILoger('Raspberry','log.txt')):
+    def __init__(self, _mode='BCM', _list_input=[], _list_output=[], _list_relationship=[], _loger:ILoger.ILoger=ILoger.ILoger()):
         self.list_input = _list_input
         self.list_output = _list_output
         self.list_relationship = _list_relationship

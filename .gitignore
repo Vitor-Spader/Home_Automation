@@ -1,4 +1,4 @@
 env/*
-*/__pycache__/*
-__pycache__/*
+**/__pycache__/*
+Controler/__pycache__/Controler.cpython-311.pyc
 nohup.out
