@@ -9,10 +9,11 @@ class BasicLoger(ILoger.ILoger):
 
     def write_log(self, _description:str):
         with open(self.path_file,'a') as file:
-            file.write(
+            file.writelines(
+                ','+
                 {
                     "description": _description,
                     "module": self.module_description,
-                    "CreatedDate": datetime.datetime.now()
+                    "CreatedDate": datetime.datetime.now().__str__()
                 }.__str__()
             )
