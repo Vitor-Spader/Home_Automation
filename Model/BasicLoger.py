@@ -14,5 +14,5 @@ class BasicLoger(ILoger.ILoger):
                     "description": _description,
                     "module": self.module_description,
                     "CreatedDate": datetime.datetime.now()
-                }
+                }.__str__()
             )
