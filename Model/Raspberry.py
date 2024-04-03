@@ -1,12 +1,13 @@
 import RPi.GPIO as GPIO
-from Interface import IBoard
+from Interface import IBoard, ILoger
 
 class Raspberry(IBoard.IBoard):
 
-    def __init__(self, _mode='BCM', _list_input=[], _list_output=[], _list_relationship=[]):
+    def __init__(self, _mode='BCM', _list_input=[], _list_output=[], _list_relationship=[], _loger:ILoger.ILoger=ILoger.ILoger('Raspberry','log.txt')):
         self.list_input = _list_input
         self.list_output = _list_output
         self.list_relationship = _list_relationship
+        self.loger = _loger
 
         if _mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
@@ -21,9 +22,11 @@ class Raspberry(IBoard.IBoard):
         GPIO.add_event_detect(self.list_input[0], GPIO.BOTH, callback=callback, bouncetime=200)
 
     def callback(self,_id):
+        self.loger.write_log(f'callback {_id}')
         self.switch(self.list_relationship[_id])
 
     def set_on(self, _id) -> None:
+        self.loger.write_log(f'set_on {_id}')
         GPIO.output(_id, GPIO.LOW)
 
     def set_off(self, _id) -> None:
