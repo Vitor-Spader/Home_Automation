@@ -23,7 +23,10 @@ class Raspberry(IBoard.IBoard):
 
     def callback(self,_id):
         self.loger.write_log(f'callback {_id}')
-        self.switch(self.list_relationship[_id])
+        past_state = self.get_state(_id)
+        time.sleep(0.1)
+        if past_state == self.get_state(_id):
+            self.switch(self.list_relationship[_id])
 
     def set_on(self, _id) -> None:
         self.loger.write_log(f'set_on {_id}')
