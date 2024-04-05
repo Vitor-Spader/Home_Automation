@@ -11,7 +11,7 @@ class BasicLoger(ILoger.ILoger):
     def write_log(self, _description:str): 
         try: 
             with open(self.path_file,'a') as file:
-                json_file = json.loads(file.readall())
+                json_file = json.loads(file.readlines())
                 json_file.append({
                                     "description": _description,
                                     "module": self.module_description,
