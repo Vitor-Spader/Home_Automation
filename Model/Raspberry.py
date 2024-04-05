@@ -21,11 +21,13 @@ class Raspberry(IBoard.IBoard):
     
     def add_callback(self, callback):
         GPIO.add_event_detect(self.list_input[0], GPIO.FALLING, callback=callback, bouncetime=500)
-        GPIO.add_event_detect(self.list_input[0], GPIO.RISING, callback=callback, bouncetime=500)
 
     def callback(self,_id):
+        past_state = self.get_state(_id)
         self.loger.write_log(f'callback {_id}')
-        self.switch(self.list_relationship[_id])
+        time.sleep(0.5)
+        if past_state == self.get_state(_id):
+            self.switch(self.list_relationship[_id])
 
     def set_on(self, _id) -> None:
         self.loger.write_log(f'set_on {_id}')
