@@ -9,6 +9,7 @@ class BasicLoger(ILoger.ILoger):
         self.path_file = _path_file
 
     def write_log(self, _description:str): 
+        return
         try: 
             with open(self.path_file,'a') as file:
                 json_file = json.loads(file.readlines())
