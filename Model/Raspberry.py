@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 from Interface import IBoard, ILoger
 
 class Raspberry(IBoard.IBoard):
