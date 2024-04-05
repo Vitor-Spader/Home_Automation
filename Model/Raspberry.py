@@ -9,8 +9,6 @@ class Raspberry(IBoard.IBoard):
         self.list_relationship = _list_relationship
         self.loger = _loger
 
-        #Clean State
-        GPIO.cleanup()
 
         if _mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
