@@ -30,3 +30,6 @@ class Controler:
     def __verify_list__(self, list_to_verify:[]):
         if list_to_verify is None:
             raise Exception('Invalid parameters of ligths')
+
+    def close(self, _id_board):
+        self.board[_id_board].close()

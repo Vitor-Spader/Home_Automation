@@ -46,3 +46,7 @@ def request_refresh_database(Light:Light):
 @app.post("/state")
 def request_read_item(Light:Light):
     return {"state":controler.get_state(_id_board=Light.Id_board, _id=Light.Id)}
+
+@app.get("/close/{_id_board}")
+def request_close(_id_board:int):
+    return controler.close(_id_board)

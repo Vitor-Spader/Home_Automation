@@ -9,6 +9,9 @@ class Raspberry(IBoard.IBoard):
         self.list_relationship = _list_relationship
         self.loger = _loger
 
+        #Clean State
+        GPIO.cleanup()
+
         if _mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
         self.__setup_IO__()
@@ -19,7 +22,7 @@ class Raspberry(IBoard.IBoard):
         GPIO.setup(self.list_output,GPIO.OUT, initial=GPIO.HIGH)
     
     def add_callback(self, callback):
-        GPIO.add_event_detect(self.list_input[0], GPIO.BOTH, callback=callback, bouncetime=200)
+        GPIO.add_event_detect(self.list_input[0], GPIO.BOTH, callback=callback, bouncetime=500)
 
     def callback(self,_id):
         self.loger.write_log(f'callback {_id}')
