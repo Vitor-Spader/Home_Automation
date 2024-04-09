@@ -10,7 +10,7 @@ class Raspberry(IBoard.IBoard):
         self.list_output = _list_output
         self.list_relationship = _list_relationship
         self.loger = _loger
-        self.last_updated_state = datetime.datetime.now()
+        self.last_updated_state = datetime.now()
 
         if _mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
