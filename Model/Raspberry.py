@@ -15,7 +15,7 @@ class Raspberry(IBoard.IBoard):
         if _mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
         self.__setup_IO__()
-        self.list_input_state = {id:not GPIO.input(id) == 1 for id in self.list_input}
+        self.list_input_state = {id:GPIO.input(id) == 1 for id in self.list_input}
         self.add_callback(self.callback)
     
     def __setup_IO__(self):
@@ -27,7 +27,7 @@ class Raspberry(IBoard.IBoard):
 
     def callback(self,_id):
         time.sleep(0.001)
-        if self.list_input_state[_id] != self.get_state(_id):
+        if self.list_input_state[_id] != GPIO.input(_id):
             self.list_input_state[_id] = not self.list_input_state[_id]
             self.switch(self.list_relationship[_id])
             print(_id)
