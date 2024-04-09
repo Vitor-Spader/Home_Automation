@@ -45,7 +45,6 @@ class Raspberry(IBoard.IBoard):
         print(_id)
         if abs(datetime.datetime.now() - self.last_updated_state) > datetime.timedelta(minutes=30):
             self.list_input_state = {id:GPIO.input(id) == 1 for id in self.list_input}
-        print(self.list_input_state[_id])
         return self.list_input_state[_id]
 
     def get_mode(self, _id) -> str:
