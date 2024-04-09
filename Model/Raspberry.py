@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-from datetime import datetime
+import datetime
 from Interface import IBoard, ILoger
 
 class Raspberry(IBoard.IBoard):
@@ -10,7 +10,7 @@ class Raspberry(IBoard.IBoard):
         self.list_output = _list_output
         self.list_relationship = _list_relationship
         self.loger = _loger
-        self.last_updated_state = datetime.now()
+        self.last_updated_state = datetime.datetime.now()
 
         if _mode == 'BCM': GPIO.setmode(GPIO.BCM)
         else: GPIO.setmode(GPIO.BOARD)
@@ -39,7 +39,7 @@ class Raspberry(IBoard.IBoard):
         GPIO.output(_id, GPIO.HIGH)
 
     def get_state(self, _id:int) -> bool:
-        if abs(datetime.now() - self.last_updated_state) > datetime.timedelta(min=30):
+        if abs(datetime.datetime.now() - self.last_updated_state) > datetime.timedelta(min=30):
             self.list_input_state = {id:GPIO.input(id) == 1 for id in self.list_input}
         return self.list_input_state[_id]
 
