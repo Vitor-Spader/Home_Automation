@@ -39,7 +39,7 @@ class Raspberry(IBoard.IBoard):
         GPIO.output(_id, GPIO.HIGH)
 
     def get_state(self, _id:int) -> bool:
-        if abs(datetime.datetime.now() - self.last_updated_state) > datetime.timedelta(min=30):
+        if abs(datetime.datetime.now() - self.last_updated_state) > datetime.timedelta(minutes=30):
             self.list_input_state = {id:GPIO.input(id) == 1 for id in self.list_input}
         return self.list_input_state[_id]
 
