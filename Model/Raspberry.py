@@ -30,6 +30,8 @@ class Raspberry(IBoard.IBoard):
         if self.list_input_state[_id] != self.get_state(_id):
             self.list_input_state[_id] = not self.list_input_state[_id]
             self.switch(self.list_relationship[_id])
+        print(_id)
+        print('callback')
 
     def set_on(self, _id) -> None:
         self.loger.write_log(f'set_on {_id}')
@@ -39,6 +41,7 @@ class Raspberry(IBoard.IBoard):
         GPIO.output(_id, GPIO.HIGH)
 
     def get_state(self, _id:int) -> bool:
+        print(_id)
         if abs(datetime.datetime.now() - self.last_updated_state) > datetime.timedelta(minutes=30):
             self.list_input_state = {id:GPIO.input(id) == 1 for id in self.list_input}
 
