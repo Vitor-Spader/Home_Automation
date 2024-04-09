@@ -21,10 +21,10 @@ class Raspberry(IBoard.IBoard):
         GPIO.setup(self.list_output,GPIO.OUT, initial=GPIO.HIGH)
     
     def add_callback(self, callback):
-        GPIO.add_event_detect(self.list_input[0], GPIO.FALLING, callback=callback, bouncetime=500)
+        GPIO.add_event_detect(self.list_input[0], GPIO.BOTH, callback=callback, bouncetime=200)
 
     def callback(self,_id):
-        time.sleep(0.01)
+        time.sleep(0.001)
         if self.list_input_state[_id] != self.get_state(_id):
             self.list_input_state[_id] = not self.list_input_state[_id]
             self.switch(self.list_relationship[_id])
